@@ -23,16 +23,16 @@ Trong file `config/saml2_settings.php`. Định nghĩa tên các IDP mà hệ th
 
 **config/saml2_settings.php**
 ```
-'IDPNames' => ['mytestIDP1', 'test', 'myIDP2'],
+'IDPNames' => ['mytestidp1', 'test', 'myidp2'],
 ```
 #### Cấu hình laravel-saml2 với mỗi IDP được định nghĩa ở trên
-Với mỗi IDP cần tạo 1 file cấu hình trong thư mục `app/config/saml2/` theo định dạng `{IDP_name}_IDP_settings.php`. Ví dụ: `test_IDP_settings.php`.
-Chỉ nên **copy** từ file mặc định `mytestIDP1_IDP_settings.php` và sửa. Không nên tự tạo mới.
+Với mỗi IDP cần tạo 1 file cấu hình trong thư mục `app/config/saml2/` theo định dạng `{idp_name}_idp_settings.php`. Ví dụ: `test_idp_settings.php`.
+Chỉ nên **copy** từ file mặc định `mytestidp1_idp_settings.php` và sửa. Không nên tự tạo mới.
 
-Trong file IDP_settings. Sửa lại biến `$this_IDP_env_id`. Biến này đại diện cho mỗi IDP config trong file **.env** . Ví dụ:
-**config/saml2/test_IDP_settings.php**
+Trong file idp_settings. Sửa lại biến `$this_idp_env_id`. Biến này đại diện cho mỗi IDP config trong file **.env** . Ví dụ:
+**config/saml2/test_idp_settings.php**
 ```
-$this_IDP_env_id = 'TEST';
+$this_idp_env_id = 'TEST';
 ```
 #### Cấu hình file .env
 Với mỗi biến được tạo trong file IDP config ở trên. Setting tương ứng trong file **.env**. Ví dụ:
@@ -60,9 +60,7 @@ Các thông tin trên được lấy ở hệ thống IDP.
 ### Sử dụng
 
 #### Login
-Khi login thành công. IDP sẽ gọi callback vào `{routesPrefix}/{IDPName}/acs` của SP. SP validate SamlResponse thành công sẽ trigger event.
-Trong file:
-**App/Providers/MyEventServiceProvider.php**
+Khi login thành công. IDP sẽ gọi callback vào `{routesPrefix}/{IDPName}/acs` của SP. SP validate SamlResponse thành công sẽ trigger event. Trong file: **App/Providers/MyEventServiceProvider.php**
 ```
 Event::listen('Aacotroneo\Saml2\Events\Saml2LoginEvent', function (Saml2LoginEvent $event) {
     $messageId = $event->getSaml2Auth()->getLastMessageId();
@@ -86,9 +84,7 @@ Logout có thể sử lý theo 2 cách:
 1. SP chủ động logout, lúc này SP 'nên' thông báo cho IDP để IDP logout.
 2. Logout bằng SSO. SP sẽ gọi link logout `{routesPrefix}/{IDPName}/logout`. IDP sẽ trả response về `{routesPrefix}/{IDPName}/sls`.
 
-SP validate SamlResponse thành công sẽ trigger event.
-Trong file:
-**App/Providers/MyEventServiceProvider.php**
+SP validate SamlResponse thành công sẽ trigger event. Trong file: **App/Providers/MyEventServiceProvider.php**
 ```
 Event::listen('Aacotroneo\Saml2\Events\Saml2LogoutEvent', function ($event) {
     Auth::logout();
