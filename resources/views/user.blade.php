@@ -23,13 +23,7 @@
     <body class="antialiased">
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
             <div>
-                <a style="
-                padding: 6px;
-                background: #007bff;
-                color: #fff; border: 1px solid #007bff !important; border-radius: 0.25rem !important"
-                   href="/saml2/savannah/login">
-                    Login with Savannah
-                </a>
+
             </div>
         </div>
     </body>
