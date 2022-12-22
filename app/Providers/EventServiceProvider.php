@@ -39,7 +39,9 @@ class EventServiceProvider extends ServiceProvider
             $user = new User();
             $user->id = $samlUser->getUserId();
             $user->attributes = $samlUser->getAttributes();
-            Auth::guard("web")->login($user);
+
+            dd($user);
+//            Auth::guard("web")->login($user);
         });
     }
 
