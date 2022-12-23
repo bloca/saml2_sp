@@ -10,6 +10,8 @@ use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Aacotroneo\Saml2\Events\Saml2LoginEvent;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -35,13 +37,19 @@ class EventServiceProvider extends ServiceProvider
             $messageId = $event->getSaml2Auth()->getLastMessageId();
             // Add your own code preventing reuse of a $messageId to stop replay attacks
             $samlUser = $event->getSaml2User();
+            $attributes = $samlUser->getAttributes();
 
-            $user = new User();
-            $user->id = $samlUser->getUserId();
-            $user->attributes = $samlUser->getAttributes();
+            $user = User::where('email', $samlUser->getUserId())->first();
 
-            dd($user);
-//            Auth::guard("web")->login($user);
+            if (!$user) {
+                $user = User::create([
+                    'name' => $attributes['name'][0],
+                    'email' => $samlUser->getUserId(),
+                    'password' => Hash::make(Str::random(8))
+                ]);
+            }
+
+            Auth::guard("user")->login($user);
         });
     }
 

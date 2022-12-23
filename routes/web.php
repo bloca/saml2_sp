@@ -15,14 +15,14 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::middleware('guest:web')->group(function () {
+Route::middleware('guest:user')->group(function () {
     Route::get('/', function () {
         return view('welcome');
     })->name('login');
 });
 
-Route::middleware('auth:web')->group(function () {
+Route::middleware('auth:user')->group(function () {
     Route::get('/user', function () {
-        return view('welcome');
+        return view('user');
     })->name('user');
 });
